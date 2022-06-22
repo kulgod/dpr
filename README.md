@@ -3,5 +3,11 @@ building a search engine API with Dense Passage Retrieval (DPR)
 
 
 # TODO
-# - test initial endpoints
-# - write indexing logic
+indexing
+- test initial endpoints
+- write indexing logic
+- write data store 
+
+querying
+- load from data store
+- 
