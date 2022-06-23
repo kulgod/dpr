@@ -3,6 +3,7 @@ __pycache__/
 *.py[cod]
 *$py.class
 *.pickle
+.DS_Store
 
 # data files
 data/

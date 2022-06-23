@@ -19,7 +19,9 @@ def post_index():
     parser = file_parser.FileParser()
 
     file_contents = request.data.decode("utf-8")
-    passages = parser.get_passages(file_contents)
+    # passages = parser.get_passages(file_contents)
+    # passages = parser.get_rolling_passages(file_contents)
+    passages = parser.get_passages_with_complete_sentences(file_contents)
     encodings = encode_passages(passages)
 
     identifiers = indx.add_to_index(passages, encodings)
