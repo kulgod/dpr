@@ -2,6 +2,7 @@ from bson import encode
 from flask import Flask, request
 from index import index
 from query import query_executor
+from parse import file_parser
 
 from sentence_transformers import SentenceTransformer
 
@@ -15,9 +16,10 @@ def post_index():
         return 'Unsupported content type', 415
 
     indx = index.Index()
+    parser = file_parser.FileParser()
 
     file_contents = request.data.decode("utf-8")
-    passages = get_passages(file_contents)
+    passages = parser.get_passages(file_contents)
     encodings = encode_passages(passages)
 
     identifiers = indx.add_to_index(passages, encodings)
@@ -37,18 +39,6 @@ def get_query():
     executor = query_executor.QueryExecutor(indx.index_map, indx.passages)
 
     return executor.search(encoded_query)
-
-def get_passages(data): 
-    words = data.split(' ') 
-    all_passages = []
-    n_words = len(words)
-
-    for i in range(0, n_words // PASSAGE_LENGTH_WORDS):
-        starting_word_index = i * PASSAGE_LENGTH_WORDS
-        passage_words = words[starting_word_index: starting_word_index + PASSAGE_LENGTH_WORDS]
-        all_passages.append(' '.join(passage_words))
-
-    return all_passages
 
 def encode_passages(passages):
     # encode the passages
